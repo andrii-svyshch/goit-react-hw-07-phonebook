@@ -34,7 +34,7 @@ export default function ContactForm() {
 
     duplicateValidator(name)
       ? alert(`${name} is already in contacts`)
-      : dispatch(operations.addContact(name, number));
+      : dispatch(operations.addContact({ name, number }));
 
     setName('');
     setNumber('');
