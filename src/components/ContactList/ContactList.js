@@ -1,6 +1,7 @@
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 import { useSelector, useDispatch } from 'react-redux';
-import * as actions from '../../redux/actions';
+import { useEffect } from 'react';
+import * as operations from '../../redux/operations';
 import { getFilteredContacts } from 'redux/selector';
 import s from './ContactList.module.css';
 
@@ -9,18 +10,28 @@ export default function ContactList() {
 
   const dispatch = useDispatch();
 
+  useEffect(() => dispatch(operations.fetchContacts()), [dispatch]);
+
   return (
-    <ul>
-      {items.map(({ name, number, id }) => (
-        <li className={s.item} key={uuidv4()}>
-          <p>
-            {name} : {number}
-          </p>
-          <button onClick={() => dispatch(actions.deleteContact(id))}>
-            Delete
-          </button>
-        </li>
-      ))}
-    </ul>
+    <>
+      {items.length > 0 && (
+        <ul>
+          {items.map(({ name, number, id }) => (
+            <li className={s.item} key={id}>
+              <p>
+                {name} : {number}
+              </p>
+              <button
+                onClick={() => {
+                  dispatch(operations.deleteContact(id));
+                }}
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
   );
 }
